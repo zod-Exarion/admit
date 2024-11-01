@@ -132,8 +132,8 @@ public class Overveiw extends JFrame {
 
                 JPanel filler = new JPanel();
 
-                ImageIcon defaultIcon = new ImageIcon("/home/meow/IdeaProjects/pandaaa/src/AdminPage/Extend.png");
-                ImageIcon clickedIcon = new ImageIcon("/home/meow/IdeaProjects/pandaaa/src/AdminPage/Retract.png");
+                ImageIcon defaultIcon = new ImageIcon("/resources/Extend.png");
+                ImageIcon clickedIcon = new ImageIcon("/resources/Retract.png");
 
                 defaultIcon = new ImageIcon(defaultIcon.getImage()
                             .getScaledInstance(25, 25, Image.SCALE_SMOOTH));
