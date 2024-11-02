@@ -2,20 +2,23 @@ package Database;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Student implements Serializable{
     private String name,gender,fname,mname,ID;
     private int age, marks, grade, roll, sch;
     private long fno,mno;
     private char section;
+    private Date dob;
 
     public static final FileSystem directory = new FileSystem("Students/",true);
 
     public Student(){};
 
-    public Student(String name, int year, String gender, int marks, String fname, long fno, String mname, long mno){
+    public Student(String name, Date dob, String gender, int marks, String fname, long fno, String mname, long mno){
         this.name = name;
-        this.age = 2024 - year;
+        this.dob = dob;
+        this.age = 2024 - dob.getYear();
         this.gender = gender;
         this.marks = marks;
         this.fname = fname;
@@ -26,17 +29,22 @@ public class Student implements Serializable{
         assign();
     }
 
+    @Override
+    public String toString(){
+        return name + age + gender + marks + fname + fno + mname + mno;
+    }
+
     void assign(){
         grade = age - 6;
         section = (char) (74 - marks/10);
         //roll = ...
         sch = marks>95?90:(marks>85?75:marks-50);
 
-        ID = Integer.toString(grade) + Character.toString(section) + "_" + Integer.toString((int) (Math.random() * 1000 + 9000));
+        ID = grade + Character.toString(section) + "_" + (int) (Math.random() * 1000 + 9000);
     }
 
     void display(){
-        System.out.println("Main Details for " + name + "\n" + grade + " " + section + " " + sch);
+        System.out.println("Main Details for " + name + "\n" + grade + " " + section + " " + sch + " " + dob.toString());
         System.out.println("Unique ID= "+ID + "\n\n");
     }
 
@@ -133,5 +141,9 @@ public class Student implements Serializable{
 
     public char getSection() {
         return section;
+    }
+
+    public Date getDob(){
+        return dob;
     }
 }
