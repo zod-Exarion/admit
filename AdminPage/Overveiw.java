@@ -14,6 +14,9 @@ import Database.Student;
 */
 
 public class Overveiw extends JFrame {
+
+    private JPanel AdminPageContent;
+
     Overveiw() {
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -23,10 +26,10 @@ public class Overveiw extends JFrame {
     }
 
     void components() {
-        JPanel contentPane = new JPanel();
-        setContentPane(contentPane);
-        contentPane.setBackground(Color.WHITE);
-        contentPane.setLayout(new BorderLayout());
+        AdminPageContent = new JPanel();
+        setContentPane(AdminPageContent);
+        AdminPageContent.setBackground(Color.WHITE);
+        AdminPageContent.setLayout(new BorderLayout());
 
         Title:
         {
@@ -37,7 +40,7 @@ public class Overveiw extends JFrame {
             Title.setPreferredSize(new Dimension(1200, 75));
             Title.setForeground(Color.BLACK);
 
-            contentPane.add(Title, BorderLayout.NORTH);
+            AdminPageContent.add(Title, BorderLayout.NORTH);
         }
         Filters:{
             JPanel Filters = new JPanel();
@@ -47,7 +50,7 @@ public class Overveiw extends JFrame {
 
             //Add the filters here.
 
-            contentPane.add(Filters, BorderLayout.WEST);
+            AdminPageContent.add(Filters, BorderLayout.WEST);
         }
 
         StudentArea:
@@ -58,7 +61,7 @@ public class Overveiw extends JFrame {
 
 
             JScrollPane scrolLPane = new JScrollPane();
-            contentPane.add(scrolLPane, BorderLayout.CENTER);
+            AdminPageContent.add(scrolLPane, BorderLayout.CENTER);
             //scrolLPane.setBorder(BorderFactory.createLineBorder(Color.red));
 
             scrolLPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -87,12 +90,12 @@ public class Overveiw extends JFrame {
                 studentName.setFont(new Font("Arial", Font.PLAIN, 30));
                 InfoSpace.add(studentName, BorderLayout.WEST);
 
-                JLabel studentInfo = new JLabel("Class: " + student.getGrade() + " | Sec: " + student.getSection() + " | " + student.getRoll());
+                JLabel studentInfo = new JLabel("  Class: " + student.getGrade() + " | Sec: " + student.getSection() + " | " + student.getRoll());
                 studentInfo.setFont(new Font("Arial", Font.PLAIN, 15));
                 studentInfo.setForeground(new Color(50,50,50));
                 InfoSpace.add(studentInfo, BorderLayout.WEST);
 
-                JLabel ID = new JLabel("ID: " + student.getID());
+                JLabel ID = new JLabel("  ID: " + student.getID());
                 ID.setFont(new Font("Arial", Font.PLAIN, 15));
                 ID.setForeground(new Color(50,50,50));
                 InfoSpace.add(ID, BorderLayout.WEST);
@@ -132,8 +135,8 @@ public class Overveiw extends JFrame {
 
                 JPanel filler = new JPanel();
 
-                ImageIcon defaultIcon = new ImageIcon("/resources/Extend.png");
-                ImageIcon clickedIcon = new ImageIcon("/resources/Retract.png");
+                ImageIcon defaultIcon = new ImageIcon("/home/meow/IdeaProjects/pandaaa/src/AdminPage/Extend.png");
+                ImageIcon clickedIcon = new ImageIcon("/home/meow/IdeaProjects/pandaaa/src/AdminPage/Retract.png");
 
                 defaultIcon = new ImageIcon(defaultIcon.getImage()
                             .getScaledInstance(25, 25, Image.SCALE_SMOOTH));
@@ -193,21 +196,35 @@ public class Overveiw extends JFrame {
                 ExtensionInfo.setLayout(new GridLayout(5,-1));
 
                 {
-                    JLabel gender = new JLabel("I'll add things later :) " + student.getGender());
-                    gender.setHorizontalAlignment(SwingConstants.LEFT);
-                    ExtensionInfo.add(gender);
+                    ExtensionInfo.add(new JLabel("Gender: " + student.getGender(), JLabel.LEFT));
+                    ExtensionInfo.add(new JLabel("Age: " + student.getAge(), JLabel.LEFT));
+                    ExtensionInfo.add(new JLabel("Father: " + student.getFname(), JLabel.LEFT));
+                    ExtensionInfo.add(new JLabel("Father's contact: +91 " + student.getFno(), JLabel.LEFT));
+                    ExtensionInfo.add(new JLabel("Mother: " + student.getMname(), JLabel.LEFT));
+                    ExtensionInfo.add(new JLabel("Mother's contact: +91 " + student.getMno(), JLabel.LEFT));
+                    ExtensionInfo.add(new JLabel("Marks obtained: " + student.getMarks(), JLabel.LEFT));
 
 
-                    /*
-                        I'll add thing later :)
-                        If you want you can add rn
-                        (pls add)
-                    */
                 }
 
                 DisplayArea.add(ExtensionInfo);
 
+                String firstName = student.getName().split(" ")[0];
+                String lastName = student.getName().split(" ")[1];
 
+                ApplicationForm form = new ApplicationForm(firstName, lastName, student.getDob(), student.getGender(), student.getMarks(), student.getFname(), student.getFno(), student.getMname(), student.getMno());
+
+                edit.addActionListener(e -> {
+                    setContentPane(form.getContentPanel());
+                    revalidate();
+                    repaint();
+                });
+
+                form.discardButton.addActionListener(e -> {
+                    setContentPane(AdminPageContent);
+                    revalidate();
+                    repaint();
+                });
             }
 
             JPanel SpaceHolder = new JPanel();
