@@ -1,8 +1,11 @@
 package Database;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class Build{
     public static void main(String[] args){
-        Student student = new Student("No U!",2008,"M",77,"a",1,"b",2);
+        Student student = new Student("The God 2",new Date(2008 - 1900, Calendar.DECEMBER, 5),"F",81,"a",1L,"b",2L);
         student.assign();
         student.save();
 
