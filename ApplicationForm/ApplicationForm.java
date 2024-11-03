@@ -284,6 +284,7 @@ public class ApplicationForm {
         mainPanel.add(scrollPane);
     }
 
+
     void save(){
 
         try{
@@ -326,6 +327,9 @@ class MainAppFrame extends JFrame {
 
         setVisible(true);
     }
+
+
+
 
     public static void main(String[] args) {
         new MainAppFrame();
