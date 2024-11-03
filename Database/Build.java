@@ -5,10 +5,12 @@ import java.util.Date;
 
 public class Build{
     public static void main(String[] args){
-        Student student = new Student("The God 2",new Date(2008 - 1900, Calendar.DECEMBER, 5),"F",81,"a",1L,"b",2L);
-        student.assign();
-        student.save();
+        for(int i = 0; i < 5; i++) {
+            Student student = new Student("The God 3", new Date(2010, Calendar.DECEMBER, 5), "F", 81, "a", 1L, "b", 2L);
+            student.assign();
+            student.save();
+            System.out.println(student.getGrade());
 
-        student.fetch();
+        }
     }
 }
