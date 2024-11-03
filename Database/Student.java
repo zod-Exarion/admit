@@ -11,6 +11,9 @@ public class Student implements Serializable{
     private char section;
     private Date dob;
 
+    public static final int MIN_GRADE = 5;
+    public static final int MAX_GRADE = 12;
+
     public static final FileSystem directory = new FileSystem("Students/",true);
 
     public Student(){};
@@ -31,7 +34,7 @@ public class Student implements Serializable{
 
     @Override
     public String toString(){
-        return name + age + gender + marks + fname + fno + mname + mno;
+        return name + ID;
     }
 
     void assign(){
@@ -62,7 +65,7 @@ public class Student implements Serializable{
         }
     }
 
-    public ArrayList<Student> fetch(){
+    public static ArrayList<Student> fetch(){
         ArrayList<Student> students = new ArrayList<>();
 
         try{
@@ -74,8 +77,6 @@ public class Student implements Serializable{
                 Student newStudent = (Student) ois.readObject();
                 ois.close();
 
-                newStudent.assign();
-
                 students.add(newStudent);
             }
         }
@@ -86,6 +87,31 @@ public class Student implements Serializable{
 
         return students;
     }
+
+    public static ArrayList<Student> fetch(int grade){
+        ArrayList<Student> students = new ArrayList<>();
+
+        try{
+            String[] files = directory.readAll();
+
+            for(String file : files){
+                FileInputStream fis = new FileInputStream(file);
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                Student newStudent = (Student) ois.readObject();
+                ois.close();
+
+                if(newStudent.getGrade() == grade)
+                    students.add(newStudent);
+            }
+        }
+        catch(Exception e){
+            System.out.println("Error");
+            e.printStackTrace();
+        }
+
+        return students;
+    }
+
 
     public static int numberOfStudents(){
         return directory.readAll().length;
