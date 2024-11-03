@@ -319,7 +319,7 @@ class MainAppFrame extends JFrame {
         ApplicationForm form = new ApplicationForm("Adrito", "Gayen", new Date(), "Male", 69, "Someone", 11234L, "Someone ELse", 12324L);
 
         JPanel formPanel = form.getContentPanel();
-        form.saveButton.addActionListener(e -> save(form));
+        form.saveButton.addActionListener(e -> form.save());
 
         setLayout(new BorderLayout());
         add(formPanel, BorderLayout.CENTER);
