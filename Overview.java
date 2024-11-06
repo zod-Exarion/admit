@@ -17,6 +17,20 @@ public class Overview extends JFrame {
     private JPanel AdminPageContent;
     private JPanel Filters;
 
+    private JPanel DisplayArea = new JPanel();
+    private JButton extend,edit,delete;
+
+    private int currGradeFilter = 0;
+    private JScrollPane currFilteredSpace;
+
+
+    ImageIcon defaultIcon = new ImageIcon("/home/meow/IdeaProjects/pandaaa/src/AdminPage/Extend.png");
+    ImageIcon clickedIcon = new ImageIcon("/home/meow/IdeaProjects/pandaaa/src/AdminPage/Retract.png");
+
+
+    ImageIcon finalClickedIcon = new ImageIcon(clickedIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
+    ImageIcon finalDefaultIcon = new ImageIcon(defaultIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
+
     Overview() {
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -51,6 +65,7 @@ public class Overview extends JFrame {
             FLabel.setHorizontalAlignment(SwingConstants.CENTER);
             FLabel.setFont(new Font("Arial", Font.BOLD, 20));
             FLabel.setForeground(Color.WHITE);
+            FLabel.setName("Filters");
 
             Filters.add(FLabel);
             Filters.setBackground(new Color(40, 40, 40));
@@ -61,7 +76,7 @@ public class Overview extends JFrame {
 
         StudentArea:
         {
-            JPanel DisplayArea = new JPanel();
+            DisplayArea = new JPanel();
             DisplayArea.setBackground(Color.gray);
             DisplayArea.setLayout(new BorderLayout());
             JLabel filterWarn = new JLabel("Select A Filter.");
@@ -72,7 +87,6 @@ public class Overview extends JFrame {
             AdminPageContent.add(DisplayArea, BorderLayout.CENTER);
 
             for(int i = Student.MIN_GRADE; i <= Student.MAX_GRADE; i++) {
-
                 JScrollPane StudentArea = createStudentArea(i);
                 JButton gradeFilter = new JButton("Class " + i);
                 gradeFilter.setPreferredSize(new Dimension(150, 50));
@@ -83,12 +97,16 @@ public class Overview extends JFrame {
                 gradeFilter.setFont(new Font("Arial", Font.BOLD, 20));
                 gradeFilter.setFocusPainted(false);
 
+                gradeFilter.setName(Integer.toString(i));
+
                 Filters.add(gradeFilter);
 
+                int finalI = i;
                 gradeFilter.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         DisplayArea.removeAll();
                         DisplayArea.add(StudentArea, BorderLayout.CENTER);
+                        currGradeFilter = finalI;
 
                         revalidate();
                         repaint();
@@ -96,7 +114,6 @@ public class Overview extends JFrame {
                 });
             }
         }
-
 
         revalidate();
         repaint();
@@ -117,93 +134,8 @@ public class Overview extends JFrame {
         scrollPane.setViewportView(StudentArea);
 
         for (var student : students) {
-            // Create a container for each student's details
-            JPanel container = new JPanel();
-            container.setName(student.getID());
-
-            container.setLayout(new BorderLayout());
-            container.setPreferredSize(new Dimension(0, 100));  // Set a fixed height for each entry
-
-            JPanel InfoSpace = new JPanel();
-            InfoSpace.setLayout(new BoxLayout(InfoSpace, BoxLayout.Y_AXIS));
-
-
-
-
-            //InfoSpace.setBackground(color);
-
-
-
-
-            // Student's basic info
-            JLabel studentName = new JLabel(" " + student.getName());
-            studentName.setFont(new Font("Arial", Font.PLAIN, 30));
-            InfoSpace.add(studentName);
-
-            JLabel studentInfo = new JLabel("  Class: " + student.getGrade() + " | Sec: " + student.getSection() + " | " + student.getRoll());
-            studentInfo.setFont(new Font("Arial", Font.PLAIN, 15));
-            studentInfo.setForeground(new Color(50, 50, 50));
-            InfoSpace.add(studentInfo);
-
-            JLabel ID = new JLabel("  ID: " + student.getID());
-            ID.setFont(new Font("Arial", Font.PLAIN, 15));
-            ID.setForeground(new Color(50, 50, 50));
-            InfoSpace.add(ID);
-
-            JPanel TopPanel = new JPanel();
-            TopPanel.setLayout(new GridLayout(2, 1));
-            TopPanel.setBackground(color);
-
-            // Add Edit and Delete buttons
-            JButton edit = new JButton("Edit");
-            JPanel editPanel = new JPanel();
-            edit.setFocusPainted(false);
-            edit.setBackground(Color.WHITE);
-            edit.setForeground(Color.black);
-            edit.setPreferredSize(new Dimension(75, 25));
-            edit.setAlignmentX(Component.CENTER_ALIGNMENT);
-            edit.setAlignmentY(Component.CENTER_ALIGNMENT);
-            editPanel.add(edit);
-
-            JButton delete = new JButton("Delete");
-            JPanel deletePanel = new JPanel();
-            delete.setFocusPainted(false);
-            delete.setBackground(Color.WHITE);
-            delete.setForeground(Color.RED);
-            delete.setPreferredSize(new Dimension(75, 25));
-            delete.setAlignmentX(Component.CENTER_ALIGNMENT);
-            delete.setAlignmentY(Component.CENTER_ALIGNMENT);
-            deletePanel.add(delete);
-
-            JPanel modifyPanel = new JPanel(new GridLayout(1, 2));
-            modifyPanel.add(editPanel);
-            modifyPanel.add(deletePanel);
-            TopPanel.add(modifyPanel);
-
-            // Extension toggle button
-            ImageIcon defaultIcon = new ImageIcon("/home/meow/IdeaProjects/pandaaa/src/AdminPage/Extend.png");
-            ImageIcon clickedIcon = new ImageIcon("/home/meow/IdeaProjects/pandaaa/src/AdminPage/Retract.png");
-
-            ImageIcon finalClickedIcon = new ImageIcon(clickedIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
-            ImageIcon finalDefaultIcon = new ImageIcon(defaultIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
-
-            JButton extend = new JButton(finalDefaultIcon);
-            extend.setPreferredSize(new Dimension(50, 50));
-            extend.setFocusPainted(false);
-            extend.setContentAreaFilled(false);
-            extend.setBorderPainted(false);
-
-            // Extension info panel, initially hidden
-            JPanel ExtensionInfo = new JPanel();
-            ExtensionInfo.setLayout(new GridLayout(4,2));
-            ExtensionInfo.setVisible(false);
-            ExtensionInfo.add(new JLabel("Gender: " + student.getGender(), JLabel.LEFT)).setFont(new Font("Arial", Font.PLAIN, 18));
-            ExtensionInfo.add(new JLabel("Age: " + student.getAge(), JLabel.LEFT)).setFont(new Font("Arial", Font.PLAIN, 18));
-            ExtensionInfo.add(new JLabel("Father: " + student.getFname(), JLabel.LEFT)).setFont(new Font("Arial", Font.PLAIN, 18));
-            ExtensionInfo.add(new JLabel("Father's contact: +91 " + student.getFno(), JLabel.LEFT)).setFont(new Font("Arial", Font.PLAIN, 18));
-            ExtensionInfo.add(new JLabel("Mother: " + student.getMname(), JLabel.LEFT)).setFont(new Font("Arial", Font.PLAIN, 18));
-            ExtensionInfo.add(new JLabel("Mother's contact: +91 " + student.getMno(), JLabel.LEFT)).setFont(new Font("Arial", Font.PLAIN, 18));
-            ExtensionInfo.add(new JLabel("Marks obtained: " + student.getMarks(), JLabel.LEFT)).setFont(new Font("Arial", Font.PLAIN, 18));
+            JPanel container = drawContainer(student);
+            JPanel ExtensionInfo = drawExtensions(student);
 
 
             // Action to toggle extension visibility and icon
@@ -226,13 +158,6 @@ public class Overview extends JFrame {
                 }
             });
 
-            JPanel filler = new JPanel();
-            filler.add(extend);
-            TopPanel.add(filler);
-
-            container.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            container.add(InfoSpace, BorderLayout.WEST);
-            container.add(TopPanel, BorderLayout.EAST);
             StudentArea.add(container);
 
             StudentArea.add(ExtensionInfo);
@@ -259,7 +184,6 @@ public class Overview extends JFrame {
             delete.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    System.out.println("Hello");
                     for(Component c: StudentArea.getComponents()) {
                         if(c == container) {
                             File myFile = new File("Students/" + c.getName() + ".txt");
@@ -268,7 +192,11 @@ public class Overview extends JFrame {
                             StudentArea.remove(c);
                         }
                     }
-                    StudentArea.add(new JPanel()).setPreferredSize(new Dimension(0, 112));
+                    JPanel filler = new JPanel();
+                    filler.setPreferredSize(new Dimension(0, 112));
+                    filler.setBackground(new Color(7,7,28));
+                    StudentArea.add(filler);
+
                     revalidate();
                     repaint();
                 }
@@ -277,6 +205,28 @@ public class Overview extends JFrame {
             // Discard action to go back to admin panel
             form.discardButton.addActionListener(e -> {
                 setContentPane(AdminPageContent);
+                revalidate();
+                repaint();
+            });
+
+
+            for(ActionListener l: form.saveButton.getActionListeners())
+                form.saveButton.removeActionListener(l);
+
+            form.saveButton.addActionListener(e -> {
+                form.save(student);
+                setContentPane(AdminPageContent);
+                components();
+
+                for(Component c: Filters.getComponents()){
+                    if(c.getName().equals(Integer.toString(student.getGrade()))) {
+                        if(c instanceof JButton){
+                            System.out.println(c.getName());
+                            ((JButton) c).doClick();
+                        }
+                    }
+                }
+
                 revalidate();
                 repaint();
             });
@@ -295,6 +245,105 @@ public class Overview extends JFrame {
         scrollPane.repaint();
 
         return scrollPane;
+    }
+
+    JPanel drawContainer(Student student) {
+        JPanel container = new JPanel();
+        drawContainer(student, container);
+        return container;
+    }
+
+    JPanel drawContainer(Student student, JPanel container) {
+        container.setName(student.getID());
+
+        container.setLayout(new BorderLayout());
+        container.setPreferredSize(new Dimension(0, 100));
+
+        JPanel InfoSpace = new JPanel();
+        InfoSpace.setLayout(new BoxLayout(InfoSpace, BoxLayout.Y_AXIS));
+
+
+        // Student's basic info
+        JLabel studentName = new JLabel(" " + student.getName());
+        studentName.setFont(new Font("Arial", Font.PLAIN, 30));
+        InfoSpace.add(studentName);
+
+        JLabel studentInfo = new JLabel("  Class: " + student.getGrade() + " | Sec: " + student.getSection() + " | " + student.getRoll());
+        studentInfo.setFont(new Font("Arial", Font.PLAIN, 15));
+        studentInfo.setForeground(new Color(50, 50, 50));
+        InfoSpace.add(studentInfo);
+
+        JLabel ID = new JLabel("  ID: " + student.getID());
+        ID.setFont(new Font("Arial", Font.PLAIN, 15));
+        ID.setForeground(new Color(50, 50, 50));
+        InfoSpace.add(ID);
+
+        JPanel TopPanel = new JPanel();
+        TopPanel.setName("Top Panel");
+        TopPanel.setLayout(new GridLayout(2, 1));
+
+        // Add Edit and Delete buttons
+        edit = new JButton("Edit");
+        JPanel editPanel = new JPanel();
+        edit.setFocusPainted(false);
+        edit.setBackground(Color.WHITE);
+        edit.setForeground(Color.black);
+        edit.setPreferredSize(new Dimension(75, 25));
+        edit.setAlignmentX(Component.CENTER_ALIGNMENT);
+        edit.setAlignmentY(Component.CENTER_ALIGNMENT);
+        editPanel.add(edit);
+
+        delete = new JButton("Delete");
+        JPanel deletePanel = new JPanel();
+        delete.setFocusPainted(false);
+        delete.setBackground(Color.WHITE);
+        delete.setForeground(Color.RED);
+        delete.setPreferredSize(new Dimension(75, 25));
+        delete.setAlignmentX(Component.CENTER_ALIGNMENT);
+        delete.setAlignmentY(Component.CENTER_ALIGNMENT);
+        deletePanel.add(delete);
+
+        JPanel modifyPanel = new JPanel(new GridLayout(1, 2));
+        modifyPanel.add(editPanel);
+        modifyPanel.add(deletePanel);
+        TopPanel.add(modifyPanel);
+
+        container.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        container.add(InfoSpace, BorderLayout.WEST);
+        container.add(TopPanel, BorderLayout.EAST);
+
+        extend = new JButton(finalDefaultIcon);
+        extend.setPreferredSize(new Dimension(50, 50));
+        extend.setFocusPainted(false);
+        extend.setContentAreaFilled(false);
+        extend.setBorderPainted(false);
+
+        JPanel filler = new JPanel();
+        filler.add(extend);
+        TopPanel.add(filler);
+
+        return container;
+    }
+
+    JPanel drawExtensions(Student student) {
+
+        // Extension info panel, initially hidden
+        JPanel ExtensionInfo = new JPanel();
+        ExtensionInfo.setLayout(new GridLayout(4,2));
+
+        ExtensionInfo.setVisible(false);
+
+        ExtensionInfo.add(new JLabel("Gender: " + student.getGender(), JLabel.LEFT)).setFont(new Font("Arial", Font.PLAIN, 18));
+        ExtensionInfo.add(new JLabel("Age: " + student.getAge(), JLabel.LEFT)).setFont(new Font("Arial", Font.PLAIN, 18));
+        ExtensionInfo.add(new JLabel("Father: " + student.getFname(), JLabel.LEFT)).setFont(new Font("Arial", Font.PLAIN, 18));
+        ExtensionInfo.add(new JLabel("Father's contact: +91 " + student.getFno(), JLabel.LEFT)).setFont(new Font("Arial", Font.PLAIN, 18));
+        ExtensionInfo.add(new JLabel("Mother: " + student.getMname(), JLabel.LEFT)).setFont(new Font("Arial", Font.PLAIN, 18));
+        ExtensionInfo.add(new JLabel("Mother's contact: +91 " + student.getMno(), JLabel.LEFT)).setFont(new Font("Arial", Font.PLAIN, 18));
+        ExtensionInfo.add(new JLabel("Marks obtained: " + student.getMarks(), JLabel.LEFT)).setFont(new Font("Arial", Font.PLAIN, 18));
+
+
+        // Action to toggle extension visibility and icon
+        return ExtensionInfo;
     }
 
 

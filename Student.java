@@ -21,7 +21,7 @@ public class Student implements Serializable{
     public Student(String name, Date dob, String gender, int marks, String fname, long fno, String mname, long mno){
         this.name = name;
         this.dob = dob;
-        this.age = 2024 - dob.getYear();
+        this.age = 2024 - (dob.getYear() + 1900);
         this.gender = gender;
         this.marks = marks;
         this.fname = fname;

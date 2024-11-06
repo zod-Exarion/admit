@@ -2,6 +2,7 @@ package AdminPage;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -176,8 +177,11 @@ public class ApplicationForm {
             genderLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 
             maleButton.setFont(new Font("Arial", Font.PLAIN, 20));
+            maleButton.setActionCommand("M");
             femaleButton.setFont(new Font("Arial", Font.PLAIN, 20));
+            femaleButton.setActionCommand("F");
             otherButton.setFont(new Font("Arial", Font.PLAIN, 20));
+            otherButton.setActionCommand("T");
 
             genderPanel.add(genderLabel);
             genderPanel.add(maleButton);
@@ -284,8 +288,8 @@ public class ApplicationForm {
 
 
     void save(){
-
         try{
+
             String name = this.firstNameField.getText() + " " + this.lastNameField.getText();
             String gender = this.genderGroup.getSelection().getActionCommand();
             int marks =  Integer.parseInt(this.marksField.getText());
@@ -294,13 +298,22 @@ public class ApplicationForm {
             String mname = this.maField.getText();
             long mno = Long.parseLong(this.maKaPhoneField.getText());
 
+            System.out.println(((Date)this.dateSpinner.getValue()).toString());
+
             Student student = new Student(name,(Date)this.dateSpinner.getValue(),gender,marks,fname,fno,mname,mno);
-            System.out.println(student);
+            student.save();
             JOptionPane.showMessageDialog(null,"Registration Successful","INFO",JOptionPane.INFORMATION_MESSAGE);
         }
         catch(Exception e) {
             JOptionPane.showMessageDialog(null,"Make sure to fill all fields!!","ERROR",JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    void save(Student student){
+        File myFile = new File("Students/" + student.getID() + ".txt");
+        myFile.delete();
+
+        save();
     }
 
 
@@ -309,7 +322,7 @@ public class ApplicationForm {
         return mainPanel;
     }
 }
-/*
+
 class MainAppFrame extends JFrame {
     public MainAppFrame() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -336,4 +349,3 @@ class MainAppFrame extends JFrame {
 }
 
 
- */
