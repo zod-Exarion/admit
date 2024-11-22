@@ -60,7 +60,7 @@ public class StudentDashBoard{
             JPanel imagePanel = new JPanel();
             imagePanel.setPreferredSize(new Dimension(200, 225));
             imagePanel.setBackground(new Color(32,32,32));
-            JLabel imageDisplay = new JLabel(new ImageIcon((new ImageIcon("/home/meow/IdeaProjects/AdmissionManagment/src/BlankUser.jpg").getImage().getScaledInstance(200,225, Image.SCALE_SMOOTH))));
+            JLabel imageDisplay = new JLabel(new ImageIcon((new ImageIcon("BlankUser.jpg").getImage().getScaledInstance(200,225, Image.SCALE_SMOOTH))));
             imagePanel.add(imageDisplay);
             SidePanel.add(imagePanel);
             smth.add(SidePanel, BorderLayout.WEST);

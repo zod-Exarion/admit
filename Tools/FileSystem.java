@@ -42,22 +42,6 @@ public class FileSystem implements Serializable{
         }
     }
 
-    void flush(){
-        try {
-            writer = new FileWriter(file,false);
-            writer.write("");
-            writer.close();
-        }
-        catch (IOException e) {
-            System.out.println("An error has occurred.");
-            e.printStackTrace();
-        }
-    }
-
-    public void addUser(String email,String password){
-        write("\n"+email + ":" + password,true);
-    }
-
     public HashMap<String,String> fetchDatabase(){
         HashMap<String,String> map = new HashMap<String, String>();
         try{
@@ -74,7 +58,7 @@ public class FileSystem implements Serializable{
         return map;
     }
 
-    public String[] readAll(){
+    public String[] readAll(String path){
         if(!file.isDirectory()) return new String[0];
 
         File[] listOfFiles = file.listFiles();
@@ -84,7 +68,7 @@ public class FileSystem implements Serializable{
         int i = 0;
         for (File file : listOfFiles)
             if (file.isFile()){
-                fileNameList[i] = "Students/"+file.getName();
+                fileNameList[i] = path+file.getName();
                 i++;
             }
 

@@ -29,8 +29,8 @@ public class Overview {
     private ApplicationForm form;
 
     Overview() {
-        ImageIcon defaultIcon = new ImageIcon("/home/meow/IdeaProjects/AdmissionManagment/src/Extend.png");
-        ImageIcon clickedIcon = new ImageIcon("/home/meow/IdeaProjects/AdmissionManagment/src/Retract.png");
+        ImageIcon defaultIcon = new ImageIcon("Extend.png");
+        ImageIcon clickedIcon = new ImageIcon("Retract.png");
         finalClickedIcon = new ImageIcon(clickedIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
         finalDefaultIcon = new ImageIcon(defaultIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
         components();

@@ -170,6 +170,8 @@ public class StartUpFrame extends JFrame {
         LoginButton.setBackground(new Color(237, 116, 24));
         LoginButton.setPreferredSize(new Dimension(500, 35));
 
+        LoginButton.addActionListener(e -> login(EmailField,PasswordField));
+
         loginPanel.add(LoginButton);
 
         layout.putConstraint(SpringLayout.NORTH, LoginButton, 40, SpringLayout.SOUTH, PasswordField);
@@ -281,6 +283,10 @@ public class StartUpFrame extends JFrame {
         signUpButton.setFont(new Font("", Font.BOLD, 25));
         signUpButton.setBackground(new Color(237, 116, 24));
         signUpButton.setPreferredSize(new Dimension(500, 35));
+
+
+        signUpButton.addActionListener(e -> signUp(EmailField,PasswordField,repeatPasswordField));
+
         signupPanel.add(signUpButton);
 
 
@@ -296,6 +302,39 @@ public class StartUpFrame extends JFrame {
     public JPanel getMainPanel() {
         return mainPanel;
     }
+
+
+  public void signUp(JTextField EmailField,JPasswordField PasswordField,JPasswordField repeatPasswordField){
+    String email = EmailField.getText().trim();
+    String password = new String(PasswordField.getPassword());
+    String password2 = new String(repeatPasswordField.getPassword());
+
+    if(checkValidSignUp(email) && password.equals(password2)){
+      file.write(email+":"+password+"\n",true);
+      database.put(email,password);
+      JOptionPane.showMessageDialog(null,"Sign Up Successful","INFO",JOptionPane.INFORMATION_MESSAGE);
+    }
+    else JOptionPane.showMessageDialog(null,"ERROR! Password Mismatch\n OR\nPreexisting User!","ERROR",JOptionPane.ERROR_MESSAGE);
+  }
+
+  public void login(JTextField EmailField, JPasswordField PasswordField){
+    String email = EmailField.getText().trim();
+    String password = new String(PasswordField.getPassword());
+
+    if(checkValidLogin(email,password)) JOptionPane.showMessageDialog(null,"Success","INFO",JOptionPane.INFORMATION_MESSAGE);
+    else if(email.equals("admin") && password.equals("VMS")) System.out.println("Welcome! ADMIN"); 
+    else  JOptionPane.showMessageDialog(null,"Invalid Login","ERROR",JOptionPane.ERROR_MESSAGE);
+  }
+
+  public boolean checkValidSignUp(String email){
+    return(null==(database.get(email)));
+  }
+
+  public boolean checkValidLogin(String email,String password){
+    if(checkValidSignUp(email)) return false;
+    String pass = database.get(email);
+    return(pass.equals(password));
+  }
 }
 
 class MainStartUpFrame extends JFrame {
