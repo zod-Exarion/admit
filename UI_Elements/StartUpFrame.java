@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,6 +26,8 @@ public class StartUpFrame extends JFrame {
 
     private final FileSystem file = new FileSystem("passwords.txt");
     private final HashMap<String,String> database = file.fetchDatabase();
+
+    private Student student = new Student();
 
     StartUpFrame(){
         mainPanel = new JPanel();
@@ -313,6 +316,10 @@ public class StartUpFrame extends JFrame {
         if(checkValidSignUp(email) && password.equals(password2)){
             file.write(email+":"+password+"\n",true);
             database.put(email,password);
+            student.setMail(email);
+
+            //start application form here with the student var and SAVE student
+
             JOptionPane.showMessageDialog(null,"Sign Up Successful","INFO",JOptionPane.INFORMATION_MESSAGE);
         }
         else JOptionPane.showMessageDialog(null,"ERROR! Password Mismatch\n OR\nPreexisting User!","ERROR",JOptionPane.ERROR_MESSAGE);
@@ -326,7 +333,23 @@ public class StartUpFrame extends JFrame {
             mode = true;
         }
 
-        if(checkValidLogin(email,password)) JOptionPane.showMessageDialog(null,"Success","INFO",JOptionPane.INFORMATION_MESSAGE);
+        if(checkValidLogin(email,password)){
+            JOptionPane.showMessageDialog(null,"Success","INFO",JOptionPane.INFORMATION_MESSAGE);
+            ArrayList<Student> arr = student.fetch();
+            for(Student s : arr) {
+                s.display();
+                if (s.getEmail().equals(email)) {
+                    student = s;
+                    s.display();
+                }
+            }
+            student.toggleAdmitted(true);
+            arr = student.fetch();
+            for(Student s : arr)
+                if(s.getEmail().equals(email)) {student = s;s.display();}
+
+            //write Dashboard code here
+        }
         else  JOptionPane.showMessageDialog(null,"Invalid Login","ERROR",JOptionPane.ERROR_MESSAGE);
     }
 

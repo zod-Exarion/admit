@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.Objects;
 
 public class Student implements Serializable{
-    private String name,gender,fname,mname,ID,address;
+    private String name,gender,fname,mname,ID,address,email;
     private int age, marks, grade, roll, sch;
     private long fno,mno;
     private char section;
@@ -25,6 +25,7 @@ public class Student implements Serializable{
         this.isActive = false;
         this.isPaid = false;
         this.isAdmitted = false;
+        email="";
         configure();
     }
 
@@ -42,6 +43,7 @@ public class Student implements Serializable{
         this.isActive = false;
         this.isPaid = false;
         this.isAdmitted = false;
+        email = "";
 
         assign();
     }
@@ -83,6 +85,30 @@ public class Student implements Serializable{
             e.printStackTrace();
         }
     }
+
+    public ArrayList<Student> fetch(){
+        ArrayList<Student> students = new ArrayList<>();
+
+        try{
+            String[] files = directory.readAll(path);
+
+            for(String file : files){
+                FileInputStream fis = new FileInputStream(file);
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                Student newStudent = (Student) ois.readObject();
+                ois.close();
+
+                students.add(newStudent);
+            }
+        }
+        catch(Exception e){
+            System.out.println("Error");
+            e.printStackTrace();
+        }
+
+        return students;
+    }
+
 
     public ArrayList<Student> fetch(int grade){
         ArrayList<Student> students = new ArrayList<>();
@@ -140,6 +166,7 @@ public class Student implements Serializable{
     public boolean getPaid(){return isPaid;}
     public void togglePaid(boolean flag){isPaid=flag;}
     public boolean getAdmitted(){return isAdmitted;}
+    public String getEmail(){return email;}
 
     public void toggleAdmitted(boolean flag){
         File file = new File(path+ID+".txt");
@@ -154,5 +181,9 @@ public class Student implements Serializable{
         System.out.println(getName()); 
         System.out.println(getGrade()+" "+getSection()+" "+getRoll()); 
         System.out.println(getSch()); 
+    }
+
+    public void setMail(String mail){
+        email = mail;
     }
 }
