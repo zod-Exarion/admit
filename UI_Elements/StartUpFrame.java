@@ -21,6 +21,7 @@ public class StartUpFrame extends JFrame {
     private JButton signUpButton;
 
     private boolean isLogin = false;
+    private boolean mode = false;
 
     private final FileSystem file = new FileSystem("passwords.txt");
     private final HashMap<String,String> database = file.fetchDatabase();
@@ -304,37 +305,40 @@ public class StartUpFrame extends JFrame {
     }
 
 
-  public void signUp(JTextField EmailField,JPasswordField PasswordField,JPasswordField repeatPasswordField){
-    String email = EmailField.getText().trim();
-    String password = new String(PasswordField.getPassword());
-    String password2 = new String(repeatPasswordField.getPassword());
+    public void signUp(JTextField EmailField,JPasswordField PasswordField,JPasswordField repeatPasswordField){
+        String email = EmailField.getText().trim();
+        String password = new String(PasswordField.getPassword());
+        String password2 = new String(repeatPasswordField.getPassword());
 
-    if(checkValidSignUp(email) && password.equals(password2)){
-      file.write(email+":"+password+"\n",true);
-      database.put(email,password);
-      JOptionPane.showMessageDialog(null,"Sign Up Successful","INFO",JOptionPane.INFORMATION_MESSAGE);
+        if(checkValidSignUp(email) && password.equals(password2)){
+            file.write(email+":"+password+"\n",true);
+            database.put(email,password);
+            JOptionPane.showMessageDialog(null,"Sign Up Successful","INFO",JOptionPane.INFORMATION_MESSAGE);
+        }
+        else JOptionPane.showMessageDialog(null,"ERROR! Password Mismatch\n OR\nPreexisting User!","ERROR",JOptionPane.ERROR_MESSAGE);
     }
-    else JOptionPane.showMessageDialog(null,"ERROR! Password Mismatch\n OR\nPreexisting User!","ERROR",JOptionPane.ERROR_MESSAGE);
-  }
 
-  public void login(JTextField EmailField, JPasswordField PasswordField){
-    String email = EmailField.getText().trim();
-    String password = new String(PasswordField.getPassword());
+    public void login(JTextField EmailField, JPasswordField PasswordField){
+        String email = EmailField.getText().trim();
+        String password = new String(PasswordField.getPassword());
 
-    if(checkValidLogin(email,password)) JOptionPane.showMessageDialog(null,"Success","INFO",JOptionPane.INFORMATION_MESSAGE);
-    else if(email.equals("admin") && password.equals("VMS")) System.out.println("Welcome! ADMIN"); 
-    else  JOptionPane.showMessageDialog(null,"Invalid Login","ERROR",JOptionPane.ERROR_MESSAGE);
-  }
+        if(email.equals("admin") && password.equals("VMS")){System.out.println("Welcome! ADMIN");
+            mode = true;
+        }
 
-  public boolean checkValidSignUp(String email){
-    return(null==(database.get(email)));
-  }
+        if(checkValidLogin(email,password)) JOptionPane.showMessageDialog(null,"Success","INFO",JOptionPane.INFORMATION_MESSAGE);
+        else  JOptionPane.showMessageDialog(null,"Invalid Login","ERROR",JOptionPane.ERROR_MESSAGE);
+    }
 
-  public boolean checkValidLogin(String email,String password){
-    if(checkValidSignUp(email)) return false;
-    String pass = database.get(email);
-    return(pass.equals(password));
-  }
+    public boolean checkValidSignUp(String email){
+        return(null==(database.get(email)));
+    }
+
+    public boolean checkValidLogin(String email,String password){
+        if(checkValidSignUp(email)) return false;
+        String pass = database.get(email);
+        return(pass.equals(password));
+    }
 }
 
 class MainStartUpFrame extends JFrame {

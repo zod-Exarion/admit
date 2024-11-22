@@ -21,7 +21,12 @@ public class Student implements Serializable{
 
     public static FileSystem directory;
 
-    public Student(){}
+    public Student(){
+        this.isActive = false;
+        this.isPaid = false;
+        this.isAdmitted = false;
+        configure();
+    }
 
     public Student(String name, Date dob, String gender, int marks, String fname, long fno, String mname, long mno, String address){
         this.name = name;
@@ -34,6 +39,9 @@ public class Student implements Serializable{
         this.mname = mname;
         this.mno = mno;
         this.address = address;
+        this.isActive = false;
+        this.isPaid = false;
+        this.isAdmitted = false;
 
         assign();
     }
@@ -138,7 +146,6 @@ public class Student implements Serializable{
         if(file.delete()) System.out.println("Success");
         else System.out.println("Fail");
         isAdmitted=flag;
-        configure();
         assign(); 
         save();
     }
